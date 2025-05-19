@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Отчеты";
+}
+
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
+    
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5>Отчет по продажам</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Генерация отчета по продажам за выбранный период</p>
+                    <a asp-action="SalesReport" class="btn btn-primary">Сформировать</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5>Отчет по сотрудникам</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Отчет по отработанным сменам и зарплате</p>
+                    <a asp-action="EmployeeWorkReport" class="btn btn-success">Сформировать</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

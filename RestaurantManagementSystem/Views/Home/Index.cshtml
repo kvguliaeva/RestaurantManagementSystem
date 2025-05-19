@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "Главная";
+}
+
+<style>
+    .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                    url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 100px 0;
+        margin-bottom: 30px;
+        border-radius: 0 0 20px 20px;
+    }
+    
+    .feature-card {
+        transition: transform 0.3s;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        height: 100%;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        color: #d4af37;
+    }
+    
+    .btn-gold {
+        background-color: #d4af37;
+        border-color: #d4af37;
+        color: white;
+        font-weight: 500;
+    }
+    
+    .btn-gold:hover {
+        background-color: #c9a227;
+        border-color: #c9a227;
+        color: white;
+    }
+    
+    .quick-actions .btn {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+</style>
+
+<div class="hero-section text-center">
+    <h1 class="display-4 fw-bold">Restaurant Management System</h1>
+    <p class="lead">Профессиональное управление вашим рестораном в одном месте</p>
+    <a asp-controller="Dishes" asp-action="Index" class="btn btn-gold btn-lg mt-3">Начать работу</a>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card feature-card text-center p-4">
+                <div class="feature-icon">🍽️</div>
+                <h3>Меню</h3>
+                <p>Управляйте блюдами, категориями и ингредиентами. Создавайте сезонные предложения.</p>
+                <a asp-controller="Dishes" asp-action="Index" class="btn btn-outline-primary">Перейти</a>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card feature-card text-center p-4">
+                <div class="feature-icon">👨‍🍳</div>
+                <h3>Сотрудники</h3>
+                <p>Управляйте персоналом, графиками работы и должностями. Контролируйте доступы.</p>
+                <a asp-controller="Employees" asp-action="Index" class="btn btn-outline-primary">Перейти</a>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card feature-card text-center p-4">
+                <div class="feature-icon">📊</div>
+                <h3>Отчеты</h3>
+                <p>Анализируйте продажи, популярность блюд и финансовые показатели.</p>
+                <a asp-controller="Reports" asp-action="Index" class="btn btn-outline-primary">Перейти</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <div class="card feature-card p-4">
+                <h3 class="text-center mb-4">Последние действия</h3>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Добавлено новое блюдо "Стейк Рибай"</li>
+                    <li class="list-group-item">Изменена категория "Десерты"</li>
+                    <li class="list-group-item">Обновлены цены на напитки</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card feature-card p-4 quick-actions">
+                <h3 class="text-center mb-4">Быстрые действия</h3>
+                <div class="d-grid gap-2">
+                    <a asp-controller="Dishes" asp-action="Create" class="btn btn-gold">Добавить блюдо</a>
+                    <a asp-controller="Employees" asp-action="Create" class="btn btn-gold">Добавить сотрудника</a>
+                    <a asp-controller="Reports" asp-action="SalesReport" class="btn btn-gold">Создать отчет по продажам</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

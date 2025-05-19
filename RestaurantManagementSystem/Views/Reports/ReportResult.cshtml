@@ -1,0 +1,65 @@
+﻿@model RestaurantManagementSystem.Models.Report
+
+@{
+    ViewData["Title"] = Model.ReportType;
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <h2>@Model.ReportType</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5>Период:</h5>
+                    <p>@Model.PeriodStart.ToString("dd.MM.yyyy") - @Model.PeriodEnd.ToString("dd.MM.yyyy")</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Дата формирования:</h5>
+                    <p>@Model.ReportDate.ToString("dd.MM.yyyy HH:mm")</p>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Показатель</th>
+                            <th>Значение</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.TotalRevenue > 0)
+                        {
+                            <tr>
+                                <td>Общая выручка</td>
+                                <td>@Model.TotalRevenue.ToString("C")</td>
+                            </tr>
+                        }
+                        @if (Model.TotalSalary > 0)
+                        {
+                            <tr>
+                                <td>Общая зарплата</td>
+                                <td>@Model.TotalSalary.ToString("C")</td>
+                            </tr>
+                        }
+                        <tr class="table-active">
+                            <td><strong>Итог</strong></td>
+                            <td><strong>@Model.Total.ToString("C")</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-4">
+                <h5>Комментарий:</h5>
+                <p>@Model.Comment</p>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Index" class="btn btn-secondary">Назад к отчетам</a>
+            <button onclick="window.print()" class="btn btn-primary ms-2">Печать</button>
+        </div>
+    </div>
+</div>

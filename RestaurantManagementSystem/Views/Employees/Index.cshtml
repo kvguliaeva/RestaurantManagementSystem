@@ -1,0 +1,48 @@
+﻿@model IEnumerable<RestaurantManagementSystem.Models.Employee>
+
+@{
+    ViewData["Title"] = "Сотрудники";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>@ViewData["Title"]</h1>
+    <a asp-action="Create" class="btn btn-success">Добавить сотрудника</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ФИО</th>
+                <th>Должность</th>
+                <th>Дата приема</th>
+                <th>Зарплата</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.User?.Name</td>
+                    <td>@item.Position</td>
+                    <td>@item.HireDate.ToString("dd.MM.yyyy")</td>
+                    <td>@item.Salary.ToString("C")</td>
+                    <td>
+                        <span class="badge @(item.Status == "Активен" ? "bg-success" : "bg-secondary")">
+                            @item.Status
+                        </span>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a asp-action="Details" asp-route-id="@item.EmployeeId" class="btn btn-info btn-sm">Подробности</a>
+                            <a asp-action="Edit" asp-route-id="@item.EmployeeId" class="btn btn-warning btn-sm">Редактировать</a>
+                            <a asp-action="Delete" asp-route-id="@item.EmployeeId" class="btn btn-danger btn-sm">Удалить</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

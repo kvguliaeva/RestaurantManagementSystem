@@ -1,0 +1,162 @@
+﻿@model RestaurantManagementSystem.Models.Order
+
+@{
+    ViewData["Title"] = "Создать заказ";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" id="orderForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group mb-3">
+                <label class="control-label">Клиент *</label>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.Users" required>
+                    <option value="">-- Выберите клиента --</option>
+                </select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label class="control-label">Блюда *</label>
+                <div class="border p-3 mb-2">
+                    <table class="table table-sm" id="orderItemsTable">
+                        <thead>
+                            <tr>
+                                <th>Блюдо</th>
+                                <th>Количество</th>
+                                <th>Цена</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderItemsBody">
+                            <!-- Здесь будут добавляться строки с блюдами -->
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-sm btn-outline-primary" id="addDishBtn">
+                        Добавить блюдо
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="Comment" class="control-label">Комментарий</label>
+                <textarea asp-for="Comment" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Создать заказ</button>
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            console.log("Инициализация формы заказа...");
+            
+            var dishes = @Html.Raw(Json.Serialize(ViewData["Dishes"]));
+            console.log("Загружено блюд:", dishes.length);
+            
+            // Добавление строки с блюдом
+            $('#addDishBtn').click(function() {
+                console.log("Добавление новой строки с блюдом...");
+                var row = `
+                    <tr>
+                        <td>
+                            <select class="form-control form-control-sm dish-select" required>
+                                <option value="">-- Выберите блюдо --</option>
+                                ${dishes.map(d => 
+                                    `<option value="${d.dishId}" data-price="${d.price}">
+                                        ${d.name} (${d.price} ₽)
+                                    </option>`
+                                ).join('')}
+                            </select>
+                            <input type="hidden" class="dish-id" name="dishIds" />
+                        </td>
+                        <td>
+                            <input type="number" class="form-control form-control-sm quantity" 
+                                   name="quantities" min="1" value="1" required />
+                        </td>
+                        <td class="price-cell">0 ₽</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-outline-danger remove-row">×</button>
+                        </td>
+                    </tr>`;
+                $('#orderItemsBody').append(row);
+                console.log("Строка добавлена");
+            });
+            
+            // Удаление строки
+            $('#orderItemsBody').on('click', '.remove-row', function() {
+                console.log("Удаление строки...");
+                $(this).closest('tr').remove();
+            });
+            
+            // Обновление цены при выборе блюда
+            $('#orderItemsBody').on('change', '.dish-select', function() {
+                var selectedOption = $(this).find('option:selected');
+                var price = selectedOption.data('price') || 0;
+                var row = $(this).closest('tr');
+                row.find('.price-cell').text(price + ' ₽');
+                row.find('.dish-id').val($(this).val());
+                console.log(`Выбрано блюдо: ${selectedOption.text()}, цена: ${price} ₽`);
+            });
+            
+            // Валидация перед отправкой
+            $('#orderForm').on('submit', function() {
+                console.log("Проверка формы перед отправкой...");
+                var isValid = true;
+                
+                // Проверка выбора клиента
+                if (!$('#UserId').val()) {
+                    console.log("Ошибка: не выбран клиент");
+                    isValid = false;
+                }
+                
+                // Проверка наличия блюд
+                if ($('#orderItemsBody tr').length === 0) {
+                    console.log("Ошибка: не добавлено ни одного блюда");
+                    isValid = false;
+                }
+                
+                // Проверка каждой строки с блюдом
+                $('#orderItemsBody tr').each(function() {
+                    var dishSelect = $(this).find('.dish-select');
+                    var quantity = $(this).find('.quantity');
+                    
+                    if (!dishSelect.val()) {
+                        console.log("Ошибка: не выбрано блюдо в строке");
+                        isValid = false;
+                    }
+                    
+                    if (!quantity.val() || parseInt(quantity.val()) <= 0) {
+                        console.log("Ошибка: некорректное количество в строке");
+                        isValid = false;
+                    }
+                });
+                
+                if (!isValid) {
+                    console.log("Форма содержит ошибки, отправка отменена");
+                    alert("Пожалуйста, заполните все обязательные поля корректно");
+                } else {
+                    console.log("Форма валидна, отправка данных...");
+                }
+                
+                return isValid;
+            });
+            
+            // Добавляем первую строку при загрузке
+            $('#addDishBtn').trigger('click');
+            console.log("Форма инициализирована");
+        });
+    </script>
+}

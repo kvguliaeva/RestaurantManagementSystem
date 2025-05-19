@@ -1,0 +1,80 @@
+﻿@model RestaurantManagementSystem.Models.Order
+
+@{
+    ViewData["Title"] = "Подробности заказа";
+}
+
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h3>@ViewData["Title"] #@Model.OrderId</h3>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Клиент:</dt>
+            <dd class="col-sm-9">@Model.User?.Name</dd>
+
+            <dt class="col-sm-3">Дата заказа:</dt>
+            <dd class="col-sm-9">@Model.OrderDate.ToString("dd.MM.yyyy HH:mm")</dd>
+
+            <dt class="col-sm-3">Общая сумма:</dt>
+            <dd class="col-sm-9">@Model.TotalAmount.ToString("C")</dd>
+
+            <dt class="col-sm-3">Статус:</dt>
+            <dd class="col-sm-9">
+                <span class="badge @(Model.Status == "Новый" ? "bg-primary" : 
+                                    Model.Status == "В обработке" ? "bg-info" : 
+                                    Model.Status == "Готовится" ? "bg-warning" : 
+                                    Model.Status == "Готов" ? "bg-success" : 
+                                    Model.Status == "Доставлен" ? "bg-secondary" : 
+                                    Model.Status == "Отменен" ? "bg-danger" : "bg-light text-dark")">
+                    @Model.Status
+                </span>
+            </dd>
+
+            <dt class="col-sm-3">Комментарий:</dt>
+            <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Comment) ? "Нет комментария" : Model.Comment)</dd>
+        </dl>
+
+        <h5 class="mt-4">Позиции заказа</h5>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Блюдо</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                    <th>Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderItems)
+                {
+                    <tr>
+                        <td>@item.Dish?.Name</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Price.ToString("C")</td>
+                        <td>@((item.Price * item.Quantity).ToString("C"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (Model.Payment != null)
+        {
+            <h5 class="mt-4">Информация об оплате</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Дата оплаты:</dt>
+                <dd class="col-sm-9">@Model.Payment.PaymentDate.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                <dt class="col-sm-3">Способ оплаты:</dt>
+                <dd class="col-sm-9">@Model.Payment.PaymentMethod</dd>
+
+                <dt class="col-sm-3">Статус оплаты:</dt>
+                <dd class="col-sm-9">@Model.Payment.Status</dd>
+            </dl>
+        }
+    </div>
+    <div class="card-footer">
+        <a asp-action="Edit" asp-route-id="@Model.OrderId" class="btn btn-warning">Редактировать</a>
+        <a asp-action="Index" class="btn btn-secondary">Назад к списку</a>
+    </div>
+</div>

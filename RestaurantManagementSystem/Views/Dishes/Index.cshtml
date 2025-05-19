@@ -1,0 +1,50 @@
+﻿@model IEnumerable<RestaurantManagementSystem.Models.Dish>
+
+@{
+    ViewData["Title"] = "Меню блюд";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Добавить новое блюдо</a>
+</p>
+
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Изображение</th>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Price)</th>
+            <th>@Html.DisplayNameFor(model => model.Category)</th>
+            <th>@Html.DisplayNameFor(model => model.IsAvailable)</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImagePath))
+                    {
+                        <img src="@item.ImagePath" alt="@item.Name" style="width: 100px; height: auto;" />
+                    }
+                    else
+                    {
+                        <span>Нет изображения</span>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                <td>@Html.DisplayFor(modelItem => item.Category.Name)</td>
+                <td>@(item.IsAvailable == true ? "✅" : "❌")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.DishId" class="btn btn-sm btn-primary">Редактировать</a>
+                    <a asp-action="Details" asp-route-id="@item.DishId" class="btn btn-sm btn-info">Подробности</a>
+                    <a asp-action="Delete" asp-route-id="@item.DishId" class="btn btn-sm btn-danger">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

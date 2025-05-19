@@ -1,0 +1,49 @@
+﻿@model RestaurantManagementSystem.Models.Employee
+
+@{
+    ViewData["Title"] = "Подробности о сотруднике";
+}
+
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">ФИО:</dt>
+            <dd class="col-sm-9">@Model.User?.Name</dd>
+
+            <dt class="col-sm-3">Должность:</dt>
+            <dd class="col-sm-9">@Model.Position</dd>
+
+            <dt class="col-sm-3">Дата приема:</dt>
+            <dd class="col-sm-9">@Model.HireDate.ToString("dd.MM.yyyy")</dd>
+
+            <dt class="col-sm-3">Зарплата:</dt>
+            <dd class="col-sm-9">@Model.Salary.ToString("C")</dd>
+
+            <dt class="col-sm-3">Статус:</dt>
+            <dd class="col-sm-9">
+                <span class="badge @(Model.Status == "Активен" ? "bg-success" : "bg-secondary")">
+                    @Model.Status
+                </span>
+            </dd>
+
+            <dt class="col-sm-3">Банковский счет:</dt>
+            <dd class="col-sm-9">@Model.BankAccountNumber</dd>
+
+            @if (Model.TerminationDate.HasValue)
+            {
+                <dt class="col-sm-3">Дата увольнения:</dt>
+                <dd class="col-sm-9">@Model.TerminationDate.Value.ToString("dd.MM.yyyy")</dd>
+
+                <dt class="col-sm-3">Причина увольнения:</dt>
+                <dd class="col-sm-9">@Model.TerminationReason</dd>
+            }
+        </dl>
+    </div>
+    <div class="card-footer">
+        <a asp-action="Edit" asp-route-id="@Model.EmployeeId" class="btn btn-warning">Редактировать</a>
+        <a asp-action="Index" class="btn btn-secondary">Назад к списку</a>
+    </div>
+</div>

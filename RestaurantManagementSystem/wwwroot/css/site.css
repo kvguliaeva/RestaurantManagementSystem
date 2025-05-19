@@ -1,0 +1,32 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.table-employees th {
+    background-color: #343a40;
+    color: white;
+}
+
+.badge {
+    font-size: 0.9em;
+    padding: 0.4em 0.6em;
+}
+
+.card-header {
+    font-weight: 500;
+}

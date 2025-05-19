@@ -1,0 +1,59 @@
+﻿@model RestaurantManagementSystem.Models.Report
+
+@{
+    ViewData["Title"] = "Отчет по продажам";
+}
+
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
+    
+    <form asp-action="SalesReport" method="post" class="mt-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label asp-for="PeriodStart" class="control-label">Дата начала</label>
+                    <input asp-for="PeriodStart" type="date" class="form-control" 
+                           value="@Model.PeriodStart.ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="PeriodStart" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label asp-for="PeriodEnd" class="control-label">Дата окончания</label>
+                    <input asp-for="PeriodEnd" type="date" class="form-control" 
+                           value="@Model.PeriodEnd.ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="PeriodEnd" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Сформировать отчет</button>
+            <a asp-action="Index" class="btn btn-secondary">Назад</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Установка значений по умолчанию только если даты не установлены
+            const startDateInput = document.getElementById('PeriodStart');
+            const endDateInput = document.getElementById('PeriodEnd');
+            
+            if (!startDateInput.value) {
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                startDateInput.value = weekAgo.toISOString().split('T')[0];
+            }
+            
+            if (!endDateInput.value) {
+                endDateInput.value = new Date().toISOString().split('T')[0];
+            }
+        });
+    </script>
+}
